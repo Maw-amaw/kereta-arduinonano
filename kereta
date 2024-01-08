@@ -1,0 +1,30 @@
+#include <Servo.h>
+#include <NewPing.h>
+
+#define TRIGGER_PIN 2
+#define ECHO_PIN 3
+#define SERVO_PIN 9
+
+Servo myServo;
+NewPing sonar(TRIGGER_PIN, ECHO_PIN);
+
+void setup() {
+  myServo.attach(SERVO_PIN);
+}
+
+void loop() {
+  delay(50);
+
+  int distance = sonar.ping_cm();
+
+  if (distance < 300) {
+    moveServo(90);  // Jika jarak dekat, pindahkan servo ke 0 derajat
+  } else {
+    moveServo(0);  // Jika jarak jauh, kembalikan servo ke 90 derajat
+  }
+}
+
+void moveServo(int angle) {
+  myServo.write(angle);
+  delay(500);  // Tunggu sebentar untuk memastikan servo bergerak sepenuhnya
+}
